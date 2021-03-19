@@ -9,13 +9,14 @@ from ipywidgets import interact, fixed
 
 
 def f_to_mag(flux):
+	"""Converts flux data from unWISE to vega magnitude"""
     result = 22.5 - 2.5 * np.log10(flux)
     return result
 
 
 def cmd_setup(ra_min, ra_max, dec_min, dec_max, GridSize=100, height=8, width=20):
    
-    """unWISE sources scatter plot"""
+    """Prepares a 2d histogram of HST data and scatter plot of unWISE data from given RA and DEC"""
     Irsa.ROW_LIMIT = 100000
     data_table = Irsa.query_region("m33", catalog="unwise_2019", spatial="Polygon",
             polygon=[SkyCoord(ra=ra_min,dec=dec_min,unit=(u.deg,u.deg),frame='icrs'),
@@ -54,6 +55,7 @@ def cmd_setup(ra_min, ra_max, dec_min, dec_max, GridSize=100, height=8, width=20
     
     
 def cmds(ra_min, ra_max, dec_min, dec_max):
+	"""produces 2d histogram cmd of HST data, scatter plot of unWISE data, gridsize, and plot size sliders"""
     interact(cmd_setup, ra_min=fixed(ra_min), ra_max=fixed(ra_max),
              dec_min=fixed(dec_min), dec_max=fixed(dec_max), 
              GridSize=(50,600,1), height=(1,30,0.5), width=(1,30,0.5)
